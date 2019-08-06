@@ -1,6 +1,6 @@
 import React from 'react';
-
 import './App.css';
+import UserCard from './components/UserCard'
 
 class App extends React.Component {
   constructor() {
@@ -22,12 +22,14 @@ class App extends React.Component {
         users: user
       })
     })
+    .catch(error => console.log('Fetch Error: ', error))
   }
+  
   render() {
     console.log(this.state.users)
     return (
       <div className="App">
-        <h1>test</h1>
+        <UserCard users={this.state.users}  />
       </div>
     );
   }
