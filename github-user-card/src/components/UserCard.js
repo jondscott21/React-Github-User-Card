@@ -30,14 +30,14 @@ class UserCard extends React.Component {
     render() {
         // const {classes} = this.props
         return(
-            <Card style={{padding: '10px', border: 'lightblue 1px solid', width: '20%', margin: '20px auto'}}>
+            <Card style={{padding: '10px', border: 'black 1px solid', width: '20%', margin: '20px auto'}}>
                 <img style={{wdith: '230px', height: '230px'}} src={this.props.users.avatar_url}></img>
                 <CardContent>
                     <p>Name: {this.props.users.name}</p>
-                    <p>User Name: {this.props.users.login}</p>
+                    <p>Username: {this.props.users.login}</p>
                     <p>Title: {this.props.users.bio}</p>
                     <p>Location: {this.props.users.location}</p>
-                    <a href={this.props.users.html_url}>{this.props.users.html_url}</a>
+                    <a style={{textDecoration: 'none', color: 'grey', fontStyle: 'italic'}} href={this.props.users.html_url}>{this.props.users.html_url}</a>
                 </CardContent>
             </Card>
         // <Card>

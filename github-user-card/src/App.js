@@ -16,8 +16,8 @@ class App extends React.Component {
   
   componentDidMount() {
     this.fetchUsers()
-    // this.fetchFollowerUrls()
-    this.fetchFollowers()
+    this.fetchFollowerUrls()
+    // this.fetchFollowers()
   }
   fetchUsers = () => {
     fetch(`https://api.github.com/users/${this.userName}`)
@@ -31,22 +31,54 @@ class App extends React.Component {
     })
     .catch(error => console.log('Fetch Error: ', error))
   }
-  
-  fetchFollowers = () => {
+
+  fetchFollowerUrls = () => {
+    let followerArr = [];
       fetch(`https://api.github.com/users/jondscott21/followers`)
       .then(res => {
-          return res.json();
-    })
-    .then(friends => {
-      this.setState({
-          followers: friends
+        return res.json();
       })
-    })
-    .catch(error => console.log('Fetch Error: ', error))
+      .then(followerUrl => {
+        let urlArr = [];
+        
+          followerUrl.map(follower => {
+           urlArr = [...urlArr, follower.url]
+          })
+          return urlArr;
+      })
+      .then(urlData => {
+        urlData.map(url => fetch(url)
+          .then(allFollowers => {
+            return allFollowers.json();
+          })
+          .then(setFollowers => {
+            
+           followerArr = [...followerArr, setFollowers]
+           return followerArr
+          })
+          .then(finalRes => {
+            this.setState({
+              followers: finalRes
+            })
+          })
+        )
+      })
+  
+  // fetchFollowers = () => {
+  //     fetch(`https://api.github.com/users/jondscott21/followers`)
+  //     .then(res => {
+  //         return res.json();
+  //   })
+  //   .then(friends => {
+  //     this.setState({
+  //         followers: friends
+  //     })
+  //   })
+    // .catch(error => console.log('Fetch Error: ', error))
   }
   
   render() {
-    console.log(this.state.followersUrl)
+    console.log(this.state.followers);
     return (
       <div className="App">
         <UserCard users={this.state.users}  />
@@ -58,35 +90,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-
-// fetchFollowerUrls = () => {
-//   fetch(`https://api.github.com/users/jondscott21/followers`)
-//   .then(res => {
-//     return res.json();
-//   })
-//   .then(followerUrl => {
-//     let tempArr = [];
-//       followerUrl.map(follower => {
-//         tempArr.push(follower.url)
-//       })
-//       return tempArr;
-//   })
-//   .then(followerArr => {
-//     followerArr.map(url => fetch(url)
-//       .then(allFollowers => {
-//         return allFollowers.json();
-//       })
-//       .then(setFollowers => {
-//         console.log('setFollowers', setFollowers)
-//        let follArr = [...setFollowers]
-//        console.log(follArr)
-//        return follArr
-//       })
-//       .then(finalRes => {
-//         this.setState({
-//           followersUrl: finalRes
-//         })
-//       })
-//     )
-//   })
